@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ShopifyToZohoController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\ZohoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +26,7 @@ Route::post('/webhooks/shop_data_delete', [WebhookController::class, 'deleteShop
 // Auth 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+// Zoho Helpers 
+Route::post('/zoho/orders', [ZohoController::class, 'createOrder']);
+Route::get('/zoho/taxes', [ZohoController::class, 'matchItems']);
