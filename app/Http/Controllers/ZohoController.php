@@ -39,6 +39,21 @@ class ZohoController extends Controller
         ];
     }
 
+    public static function findCurrency(string $currencyCode)
+    {
+
+        $response = Http::zoho()->get('/settings/currencies');
+        $currencies = $response->json('currencies');
+        foreach ($currencies as $currency) {
+            if ($currency['currency_code'] === $currencyCode) {
+                return $currency;
+            }
+        }
+        return  [];
+    }
+
+
+
     public function matchItems(array $lineItems = [])
     {
         $positions = [];
@@ -67,15 +82,17 @@ class ZohoController extends Controller
         return $positions;
     }
 
-    public function findCustomer(array $customer, string $country)
+    public static function findCustomer(array $customer)
     {
-        $customer =  Http::zoho()->get('/contacts', [
+
+        $matchedCustomer =  Http::zoho()->get('/contacts', [
             'contact_name' => $customer['first_name'] . ' ' . $customer['last_name'],
             'email' => $customer['email'],
-            'country' => $country,
-
         ]);
+        return $matchedCustomer;
     }
+
+    public static function createCustomer($payload) {}
 
 
     private function fetchAllData(string $endpoint, string $property): array

@@ -16,11 +16,12 @@ class WebhookController extends Controller
         $order_number = $request->json('body.order_number');
         $orderEmail = $request->json('body.email');
         $orderStatusUrl = $request->json('body.order_status_url');
+        $totalItemsPrice = $request->json('body.total_line_items_price_set');
+        $currencyCode = $totalItemsPrice['presentment_money']['currency_code'];
         // var_dump($products);
-        $mappedItems = ShopifyToZohoController::mapShopItems($request->json('body.line_items'));
-        $zohoController = new ZohoController();
-        $zohoItems = $zohoController->matchItems([$mappedItems]);
-        return response()->json($zohoItems);
+        // $matchedCustomer = ZohoController::findCustomer($customer);
+        dump(ZohoController::findCurrency($currencyCode));
+        return response()->json([]);
     }
 
     public function returnCustomerData(Request $req)
